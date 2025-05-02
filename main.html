@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Computer Programming Classes Inquiry</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --primary-green: #43ea5e;
+            --accent-yellow: #ffd600;
+            --background: #f4f8fb;
+            --white: #fff;
+            --gray-dark: #222;
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            background: var(--background);
+            color: var(--gray-dark);
+            position: relative;
+            overflow-x: hidden;
+        }
+        .background-photo {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .background-photo img {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            filter: brightness(0.7) contrast(1.1);
+            display: block;
+        }
+        .background-photo .color-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(120deg, rgba(37,99,235,0.48) 0%, rgba(67,234,94,0.28) 100%);
+            z-index: 1;
+        }
+        .motto {
+            text-align: center;
+            font-size: 2.1rem;
+            font-weight: bold;
+            color: var(--white);
+            margin-top: 70px;
+            text-shadow: 0 3px 16px rgba(0,0,0,0.28);
+            z-index: 2;
+            position: relative;
+            letter-spacing: 1px;
+        }
+        .motto span {
+            color: var(--accent-yellow);
+        }
+        .container {
+            position: relative;
+            background: rgba(255,255,255,0.95);
+            max-width: 600px;
+            margin: 60px auto 30px auto;
+            padding: 38px 40px 30px 40px;
+            border-radius: 14px;
+            box-shadow: 0 4px 24px rgba(37,99,235,0.09), 0 2px 8px rgba(67,234,94,0.08);
+            z-index: 2;
+        }
+        h2 {
+            text-align: center;
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: var(--primary-blue);
+            font-weight: bold;
+            margin-top: -10px;
+            margin-bottom: 18px;
+            font-size: 1.08rem;
+            letter-spacing: 0.5px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            color: var(--gray-dark);
+            font-weight: 500;
+        }
+        input, select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #e0e7ef;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px #2563eb22;
+        }
+        button {
+            background: linear-gradient(90deg,var(--primary-blue),var(--primary-green));
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: linear-gradient(90deg,var(--primary-green),var(--primary-blue));
+        }
+        .review-marquee {
+            position: fixed;
+            left: 0; right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-green));
+            color: #fff;
+            padding: 12px 0;
+            font-size: 1.08rem;
+            z-index: 99;
+            width: 100vw;
+            overflow: hidden;
+            border-top: 2px solid var(--accent-yellow);
+            font-weight: 500;
+        }
+        .review-marquee span {
+            display: inline-block;
+            padding: 0 40px;
+            white-space: nowrap;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100vw); }
+        }
+        .marquee-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 28s linear infinite;
+        }
+        @media (max-width: 700px) {
+            .container {padding: 20px 8px;}
+            .motto {font-size: 1.1rem;}
+            .review-marquee span {padding: 0 16px;}
+        }
+        /* Navigation link style */
+        .navigation {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-blue);
+            color: #fff;
+            padding: 10px 20px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+        .navigation:hover {
+            background: var(--primary-green);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-photo">
+        <img src="https://images.pexels.com/photos/1181676/pexels-photo-1181676.jpeg?auto=compress&w=1200&q=80" alt="Students Coding">
+        <div class="color-overlay"></div>
+    </div>
+
+    <div class="motto">
+        Empowering Young Minds:<br>
+        <span>"Code Your Future with Computer Programming!"</span>
+    </div>
+
+    <div class="container">
+        <h2>Join Programming Classes</h2>
+        <form action="https://formspree.io/f/mldbejzd" method="POST">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" name="First Name" required>
+
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" name="Last Name" required>
+
+            <label for="email">Email ID</label>
+            <input type="email" id="email" name="Email" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="Phone Number" required pattern="[0-9]{10,15}">
+
+            <label for="language">Preferred Subject</label>
+            <select id="language" name="Preferred Language" required>
+                <option value="">--Select--</option>
+                <option value="Python">Python</option>
+                <option value="Java">Java</option>
+                <option value="C">C</option>
+                <option value="C++">C++</option>
+                <option value="C#">C#</option>
+                <option value="CBSE Computer Science">CBSE Computer Science</option>
+            </select>
+
+            <label for="message">Message</label>
+            <textarea id="message" name="Message" rows="4" placeholder="Type your message here..."></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Navigation to Reviews page -->
+    <a href="index1.html" class="navigation">View Student Reviews</a>
+
+    <!-- Sticky Review Marquee at Bottom -->
+    <div class="review-marquee">
+        <div class="marquee-content" id="marquee-content">
+            <span>🌟 Aarav S.: "I loved learning Python here! The classes are fun and easy to follow."</span>
+            <span>🌟 Meera K.: "The Java sessions helped me build my first app. Thank you!"</span>
+            <span>🌟 Rohan D.: "Great support and engaging lessons. Highly recommended!"</span>
+            <span>🌟 Priya P.: "Both Python and Java were taught so clearly. I feel confident now!"</span>
+        </div>
+    </div>
+</body>
+</html>

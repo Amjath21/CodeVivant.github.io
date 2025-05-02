@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Reviews</title>
+  <style>
+    :root {
+      --primary-blue: #2563eb;
+      --primary-green: #43ea5e;
+      --accent-yellow: #ffd600;
+      --background: #f4f8fb;
+      --white: #fff;
+      --gray-dark: #222;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      background: var(--background);
+      color: var(--gray-dark);
+      overflow-x: hidden;
+    }
+    .background-photo {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .background-photo img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      filter: brightness(0.7) contrast(1.1);
+      display: block;
+    }
+    .background-photo .color-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: linear-gradient(120deg, rgba(37,99,235,0.48) 0%, rgba(67,234,94,0.28) 100%);
+      z-index: 1;
+    }
+    .motto {
+      text-align: center;
+      font-size: 2.1rem;
+      font-weight: bold;
+      color: var(--white);
+      margin-top: 70px;
+      text-shadow: 0 3px 16px rgba(0,0,0,0.28);
+      z-index: 2;
+      position: relative;
+      letter-spacing: 1px;
+    }
+    .motto span {
+      color: var(--accent-yellow);
+    }
+    .container {
+      position: relative;
+      background: rgba(255,255,255,0.95);
+      max-width: 700px;
+      margin: 60px auto 30px auto;
+      padding: 38px 40px;
+      border-radius: 14px;
+      box-shadow: 0 4px 24px rgba(37,99,235,0.09), 0 2px 8px rgba(67,234,94,0.08);
+      z-index: 2;
+    }
+    h2 {
+      text-align: center;
+      color: var(--primary-blue);
+      margin-bottom: 5px;
+    }
+    .auth-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 18px;
+      font-size: 15px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: linear-gradient(90deg, var(--primary-blue), var(--primary-green));
+      color: white;
+    }
+    button:hover {
+      background: linear-gradient(90deg, var(--primary-green), var(--primary-blue));
+    }
+    form {
+      display: none;
+    }
+    label {
+      font-weight: 500;
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+    #reviews {
+      margin-top: 30px;
+    }
+    .review {
+      background: #f9f9f9;
+      border-left: 4px solid var(--primary-blue);
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+    }
+    .review strong {
+      color: var(--primary-blue);
+    }
+    @media (max-width: 700px) {
+      .container {padding: 20px 8px;}
+      .motto {font-size: 1.1rem;}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background-photo">
+    <img src="https://images.pexels.com/photos/1181676/pexels-photo-1181676.jpeg?auto=compress&w=1200&q=80" alt="Students Coding">
+    <div class="color-overlay"></div>
+  </div>
+
+  <div class="motto">
+    Empowering Young Minds:<br>
+    <span>"Code Your Future with Computer Programming!"</span>
+  </div>
+
+  <div class="container">
+    <h2>Student Reviews</h2>
+
+    <div class="auth-buttons">
+      <button id="loginBtn">Login with Google</button>
+      <button id="logoutBtn" style="display:none;">Logout</button>
+    </div>
+
+    <form id="reviewForm">
+      <label for="rating">Rating</label>
+      <select id="rating" required>
+        <option value="">--Select Rating--</option>
+        <option value="5">5 - Excellent</option>
+        <option value="4">4 - Good</option>
+        <option value="3">3 - Okay</option>
+        <option value="2">2 - Not great</option>
+        <option value="1">1 - Poor</option>
+      </select>
+
+      <label for="message">Review Message</label>
+      <textarea id="message" rows="4" required></textarea>
+
+      <button type="submit">Submit Review</button>
+    </form>
+
+    <div id="reviews"></div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCgrvS87MoPZQ6YI7Mtwz1YTd9gHamKvwc",
+      authDomain: "student-class-register-cb480.firebaseapp.com",
+      projectId: "student-class-register-cb480",
+      storageBucket: "student-class-register-cb480.appspot.com",
+      messagingSenderId: "1064333362178",
+      appId: "1:1064333362178:web:85a9368bff8b977271d31b",
+      measurementId: "G-GWC5WHC8EX"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const form = document.getElementById('reviewForm');
+    const reviewsDiv = document.getElementById('reviews');
+
+    let currentUser = null;
+
+    loginBtn.onclick = () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider);
+    };
+
+    logoutBtn.onclick = () => auth.signOut();
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        currentUser = user;
+        form.style.display = 'block';
+        loginBtn.style.display = 'none';
+        logoutBtn.style.display = 'inline-block';
+      } else {
+        currentUser = null;
+        form.style.display = 'none';
+        loginBtn.style.display = 'inline-block';
+        logoutBtn.style.display = 'none';
+      }
+    });
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const rating = document.getElementById('rating').value;
+      const message = document.getElementById('message').value;
+
+      if (!rating || !message) return;
+
+      await db.collection('reviews').add({
+        name: currentUser.displayName,
+        uid: currentUser.uid,
+        rating: parseInt(rating),
+        message: message,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      form.reset();
+    };
+
+    db.collection('reviews').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+      reviewsDiv.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const div = document.createElement('div');
+        div.className = 'review';
+        div.innerHTML = `<strong>${data.name}</strong> - ⭐ ${data.rating}<br>${data.message}`;
+        reviewsDiv.appendChild(div);
+      });
+    });
+  </script>
+</body>
+</html>
